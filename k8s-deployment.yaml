@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-jenkins
+  labels:
+    app: nginx-jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-jenkins
+  template:
+    metadata:
+      labels:
+        app: nginx-jenkins
+    spec:
+      containers:
+      - name: nginx
+        image: areppzubaidi/nginx-jenkins-k3s-demo:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-jenkins-service
+spec:
+  selector:
+    app: nginx-jenkins
+  ports:
+  - port: 80
+    targetPort: 80
+  type: LoadBalancer
